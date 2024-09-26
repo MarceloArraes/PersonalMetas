@@ -8,6 +8,10 @@ import {
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import { createGoalCompletion } from "../functions/create-goal-completion";
+import { createGoalRoute } from "./routes/create-goal";
+import { createCompletionRoute } from "./routes/create-completion";
+import { getPendingGoalsRoute } from "./routes/get-pending-goals";
+import { getWeekSummaryRoute } from "./routes/get-week-summary";
 
 const fastify = Fastify({
   logger: true,
@@ -15,54 +19,10 @@ const fastify = Fastify({
 
 fastify.setValidatorCompiler(validatorCompiler);
 fastify.setSerializerCompiler(serializerCompiler);
-
-fastify.get("/goals", async (request, reply) => {
-  return await getWeekPendingGoals();
-});
-
-fastify.post(
-  "/goals",
-  {
-    schema: {
-      body: z.object({
-        title: z.string(),
-        desiredWeeklyFrequency: z.number(),
-      }),
-    },
-  },
-  async (req) => {
-    const { title, desiredWeeklyFrequency } = req.body;
-    // const createGoalSchema = z.object({
-    //   title: z.string(),
-    //   desiredWeeklyFrequency: z.number(),
-    // });
-
-    // const body = createGoalSchema.parse(req.body);
-
-    const resultCreateGoals = await createGoal({
-      title: title,
-      desiredWeeklyFrequency: desiredWeeklyFrequency,
-    });
-    return resultCreateGoals;
-  }
-);
-
-fastify.post(
-  "/complete-goal",
-  {
-    schema: {
-      body: z.object({
-        goalId: z.string(),
-      }),
-    },
-  },
-  async (request, reply) => {
-    const { goalId } = request.body;
-    // I could not send the message back. Would be more standard to return just the status 200;
-    const completedGoal = createGoalCompletion({ goalId });
-    return completedGoal;
-  }
-);
+fastify.register(createGoalRoute);
+fastify.register(createCompletionRoute);
+fastify.register(getPendingGoalsRoute);
+fastify.register(getWeekSummaryRoute);
 
 fastify.get("/", async (request, reply) => {
   return "HELLO WORLD";
