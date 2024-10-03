@@ -16,8 +16,8 @@ interface WeeklySummaryProps {
 }
 
 export function WeeklySummary({ summary }: WeeklySummaryProps) {
-  const fromDate = dayjs().startOf("week").format("D[ de ]MMM");
-  const toDate = dayjs().endOf("week").format("D[ de ]MMM");
+  const fromDate = dayjs().startOf("week").format("D[ of ]MMM");
+  const toDate = dayjs().endOf("week").format("D[ of ]MMM");
 
   const completedPercentage = Math.round(
     (summary.completed * 100) / summary.total
@@ -36,22 +36,29 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
         <DialogTrigger asChild>
           <Button size="sm">
             <Plus className="size-4" />
-            Cadastrar meta
+            Create Goal 🎯
           </Button>
         </DialogTrigger>
       </div>
 
       <div className="flex flex-col gap-3">
-        <Progress value={summary.completed} max={summary.total}>
+        <Progress
+          value={
+            summary.completed < summary.total
+              ? summary.completed
+              : summary.total
+          }
+          max={summary.total}
+        >
           <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
         </Progress>
 
         <div className="flex items-center justify-between text-xs text-zinc-400">
           <span>
-            Você completou{" "}
-            <span className="text-zinc-100">{summary.completed}</span> de{" "}
-            <span className="text-zinc-100">{summary.total}</span> metas nessa
-            semana.
+            You Completed{" "}
+            <span className="text-zinc-100">{summary.completed}</span> of{" "}
+            <span className="text-zinc-100">{summary.total}</span> goals on this
+            week.
           </span>
           <span>{completedPercentage}%</span>
         </div>
@@ -62,11 +69,11 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
       <PendingGoals />
 
       <div className="space-y-6">
-        <h2 className="text-xl font-medium">Sua semana</h2>
+        <h2 className="text-xl font-medium">Your week</h2>
 
         {Object.entries(summary.goalsPerDay).map(([date, goals]) => {
           const weekDay = dayjs(date).format("dddd");
-          const parsedDate = dayjs(date).format("D[ de ]MMM");
+          const parsedDate = dayjs(date).format("D[ of ]MMM");
 
           return (
             <div className="space-y-4" key={date}>
@@ -77,14 +84,14 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
 
               <ul className="space-y-3">
                 {goals.map((goal) => {
-                  const parsedTime = dayjs(goal.createdAt).format("HH:mm[h]");
+                  const parsedTime = dayjs(goal.completedAt).format("HH:mm[h]");
 
                   return (
                     <li className="flex items-center gap-2" key={goal.id}>
                       <CheckCircle2 className="size-4 text-pink-500" />
                       <span className="text-sm text-zinc-400">
-                        Você completou "
-                        <span className="text-zinc-100">{goal.title}</span>" às{" "}
+                        You completed "
+                        <span className="text-zinc-100">{goal.title}</span>" on{" "}
                         <span className="text-zinc-100">{parsedTime}</span>
                       </span>
                     </li>
