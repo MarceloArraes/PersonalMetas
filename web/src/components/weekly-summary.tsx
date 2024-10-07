@@ -53,12 +53,12 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
           <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
         </Progress>
 
-        <div className="flex items-center justify-between text-xs text-zinc-400">
+        <div className="flex items-center justify-between text-xs text-zinc-100">
           <span>
             You Completed{" "}
-            <span className="text-zinc-100">{summary.completed}</span> of{" "}
-            <span className="text-zinc-100">{summary.total}</span> goals on this
-            week.
+            <span className="text-primary bold">{summary.completed}</span> of{" "}
+            <span className="text-primary bold">{summary.total}</span> goals on
+            this week.
           </span>
           <span>{completedPercentage}%</span>
         </div>
@@ -88,8 +88,8 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
 
                   return (
                     <li className="flex items-center gap-2" key={goal.id}>
-                      <CheckCircle2 className="size-4 text-pink-500" />
-                      <span className="text-sm text-zinc-400">
+                      <CheckCircle2 className="size-4 text-primary" />
+                      <span className="text-sm text-zinc-200">
                         You completed "
                         <span className="text-zinc-100">{goal.title}</span>" on{" "}
                         <span className="text-zinc-100">{parsedTime}</span>
