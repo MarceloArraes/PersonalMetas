@@ -19,3 +19,11 @@
   - This way i also don't need to use the keys on the queryKeys to 'force' the update.
 - Infer type from zod schema:
   - `type CreateGoalSchema = z.infer<typeof createGoalSchema>`
+
+## Home
+
+![Home](web/public/taskTracker.png?raw=true)
+<!-- https://github.com/MarceloArraes/AskMeAnything/tree/main/askMeAnythingFront/web/public/taskTracker.png?raw=true -->
+## Create Goal
+
+![Create Goal](web/public/taskTrackerCreateGoal.png?raw=true "Create Goal")
